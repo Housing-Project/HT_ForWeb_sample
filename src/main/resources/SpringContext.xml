@@ -17,7 +17,13 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 搜索spring控件 -->
     <mvc:annotation-driven />
     <mvc:default-servlet-handler/>
-    <context:component-scan base-package="com.springMVC_travel.controller"></context:component-scan>
+    <context:component-scan base-package="com.ht.controller"></context:component-scan>
+     <context:component-scan base-package="com.ht.dao"></context:component-scan>
+      <context:component-scan base-package="com.ht.daoImpl"></context:component-scan>
+       <context:component-scan base-package="com.ht.service"></context:component-scan>
+        <context:component-scan base-package="com.ht.serviceImpl"></context:component-scan>
+         <context:component-scan base-package="com.ht.model"></context:component-scan>
+          <context:component-scan base-package="com.ht.test"></context:component-scan>
     
     <!-- 视图页面配置 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -56,7 +62,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>  
         <property name="password" value="123456"></property>  
-        <property name="url" value="jdbc:mysql://10.26.230.144:3306/travels">
+        <property name="url" value="jdbc:mysql://10.26.230.144:3306/ht_for_web_sample">
         </property>  
         <property name="username" value="root"></property>  
      </bean>  
