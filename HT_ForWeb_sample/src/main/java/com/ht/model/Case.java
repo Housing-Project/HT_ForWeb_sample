@@ -5,7 +5,8 @@ public class Case {
 	private int caseId;
 	private String caseName;
 	private String mainPic;
-	private int caseStatus;
+	private int caseStatus;  //0表示删除，1表示存在
+	
 	public int getCaseId() {
 		return caseId;
 	}
