@@ -16,10 +16,12 @@ public  class PlanDaolmp_Admin implements PlanDao_Admin{
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
 	{
 		this.jdbcTemplate=jdbcTemplate;
 	}
+	
 	@Override
 	public List<Plan> getPlanList() {
 		// TODO Auto-generated method stub

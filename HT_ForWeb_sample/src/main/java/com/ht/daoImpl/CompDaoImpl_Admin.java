@@ -21,7 +21,6 @@ public class CompDaoImpl_Admin implements CompDao_Admin{
 	}
 	@Override
 	public List<Comp> getCompList() {
-		// TODO Auto-generated method stub
 		String sql="select * from comp";
 		List<Comp> CompList =jdbcTemplate.query(sql, new BeanPropertyRowMapper(Comp.class));
 		return CompList;
