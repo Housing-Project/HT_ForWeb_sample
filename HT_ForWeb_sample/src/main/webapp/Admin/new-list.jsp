@@ -228,7 +228,7 @@ function getPage(){
 }
 
 //显示页码
-function showPage(){
+/*function showPage(){
 	
 	$.ajaxSetup({                //设置同步
 	    async : false  
@@ -274,7 +274,7 @@ function showPage(){
 		});
 		
 	});
-}
+}*/
 </script> 
 </body>
 </html>
