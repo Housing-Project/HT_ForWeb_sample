@@ -24,7 +24,7 @@ public class NewTest {
 	
 	@Test
 	public void getNewList() throws SQLException{
-		List<New> newList = newInstance.getNewList();
+		List<New> newList = newInstance.getNewList(1);
 		System.out.println("newList-->" + newList);
 	}
 }

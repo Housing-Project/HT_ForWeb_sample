@@ -23,6 +23,8 @@
 <link rel="stylesheet" type="text/css" href="Admin/lib/icheck/icheck.css" />
 <link rel="stylesheet" type="text/css" href="Admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="Admin/static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" href="Admin/lib/layer/1.9.3/skin/layer.css" />
+
 <!--[if IE 6]>
 <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -45,7 +47,7 @@
 		<input type="text" name="" id="" placeholder=" 资讯名称" style="width:250px" class="input-text">
 		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资讯</button>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" _href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" data-title="添加资讯" _href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> <span class="r">共有数据：<strong id="newNum">54</strong> 条</span> </div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort">
 			<thead>
@@ -94,6 +96,8 @@
 <script type="text/javascript" src="Admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="Admin/static/h-ui/js/H-ui.js"></script> 
 <script type="text/javascript" src="Admin/static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--<script type="text/javascript" src="Admin/lib/layer/1.9.3/layer.js"></script> -->
+<!-- <script type="text/javascript" src="Admin/lib/laypage/1.2/layui.js"></script>-->
 <script type="text/javascript">
 $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
@@ -174,33 +178,101 @@ function article_shenqing(obj,id){
 	$(obj).parents("tr").find(".td-manage").html("");
 	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
 }
+var page=1;
 $(document).ready(function(){
-	alert("123");
-	getNewList();
+	getNewList(1);
+	getPage();
 })
-function getNewList(){
-	
+
+
+//获取新闻记录列表
+function getNewList(page){
 	$.ajax({
 		type:"post",
-		url:"new",
+		url:"new?page="+page+"",
+	    //data:{page:page},
+		//dataType:"json",
 		contentType:"application/json",
-		success:function(data){
+		success:function(json){
+			alert("page-->" + page);
 		    $("#tbody").empty();
-		    for(var i=0;i<data.length;i++){
+		    for(var i=0;i<json.length;i++){
 		   		$("#tbody").append("<tr class='text-c'>"
 					+"<td><input type='checkbox' value='' name=''></td>"
-					+"<td>"+data[i].newId+"</td>"
-					+"<td class='text-l'><u style='cursor:pointer' class='text-primary' onClick='article_edit('查看','article-zhang.html','10001')' title='查看'>"+data[i].newName+"</u></td>"
-					+"<td>"+data[i].newGuiding+"</td>"
-					+"<td>"+data[i].userNickName+"</td>"
-					+"<td>"+data[i].newTime+"</td>"
-					+"<td>"+data[i].viewTimes+"</td>"
+					+"<td>"+json[i].newId+"</td>"
+					+"<td class='text-l'><u style='cursor:pointer' class='text-primary' onClick='article_edit('查看','article-zhang.html','10001')' title='查看'>"+json[i].newName+"</u></td>"
+					+"<td>"+json[i].newGuiding+"</td>"
+					+"<td>"+json[i].userNickName+"</td>"
+					+"<td>"+json[i].newTime+"</td>"
+					+"<td>"+json[i].viewTimes+"</td>"
 					+"<td class='td-status'><span class='label label-success radius'>已发布</span></td>"
 					+"<td class='f-14 td-manage'><a style='text-decoration:none' onClick='article_stop(this,'10001')' href='javascript:;' title='下架'><i class='Hui-iconfont'>&#xe6de;</i></a> <a style='text-decoration:none' class='ml-5' onClick='article_edit('资讯编辑','article-add.html','10001')' href='javascript:;' title='编辑'><i class='Hui-iconfont'>&#xe6df;</i></a> <a style='text-decoration:none' class='ml-5' onClick='article_del(this,'10001')' href='javascript:;' title='删除'><i class='Hui-iconfont'>&#xe6e2;</i></a></td>"
 				+"</tr>");
 		    }
-			alert(data);
+			alert(json);
 		}
+	});
+}
+
+//获取数据库中的新闻条数并显示
+function getPage(){
+	$.ajax({
+		type:"post",
+		url:"newNum",
+		contentType:"application/json",
+		success:function(json){
+			//alert(json);
+			$("#newNum").html(""+json+"");
+		}
+	});
+}
+
+//显示页码
+function showPage(){
+	
+	$.ajaxSetup({                //设置同步
+	    async : false  
+	}); 
+	
+	var pageAll = 0;
+	//var productId = $(".input-text").val();          //获取线路编号
+	
+	$.post("new?page="+page+"", {
+		page:page
+	}, function(json) {
+	//	document.getElementById("all_data").innerHTML = json;      //总数据
+		pageAll = Math.ceil(json/10);         //页数
+		alert("pageAll"+pageAll+"");
+	});
+	
+	layui.config({
+		base: 'Admin/Mode/plugins/layui/modules/'
+	});
+
+	layui.use(['icheck', 'laypage','layer'], function() {
+		var $ = layui.jquery,
+			laypage = layui.laypage,
+			layer = parent.layer === undefined ? layui.layer : parent.layer;
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_flat-green'
+		});
+
+		//page
+		laypage({
+			cont: 'page',
+			pages: pageAll,     //总页数
+			groups: 5,		//连续显示分页数
+				
+			jump: function(obj, first) {
+				//得到了当前页，用于向服务端请求对应数据
+				var curr = obj.curr;
+				pageNow = curr;
+				if(!first) {
+					showTicketsList(curr)
+				}
+			}
+		});
+		
 	});
 }
 </script> 
