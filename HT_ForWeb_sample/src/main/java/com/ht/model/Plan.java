@@ -3,6 +3,7 @@ package com.ht.model;
 public class Plan {
 
 	private int planId;
+	private String planName;
 	private int planFloor;
 	private int planMinArea;
 	private int planMaxArea;
@@ -46,8 +47,14 @@ public class Plan {
 	}
 	@Override
 	public String toString() {
-		return "Plan [planId=" + planId + ", planFloor=" + planFloor + ", planMinArea=" + planMinArea + ", planMaxArea="
+		return "Plan [planId=" + planId + ",planName=" + planName + ", planFloor=" + planFloor + ", planMinArea=" + planMinArea + ", planMaxArea="
 				+ planMaxArea + ", planPicPath=" + planPicPath + ", planStatus=" + planStatus + "]";
+	}
+	public String getPlanName() {
+		return planName;
+	}
+	public void setPlanName(String planName) {
+		this.planName = planName;
 	}
 	
 }
