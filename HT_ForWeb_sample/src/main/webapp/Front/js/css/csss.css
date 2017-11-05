@@ -30,7 +30,7 @@ border: 1px solid #D4CD49; position:fixed;right:5%;top:5%;display: done;z-index:
 }
 .no{display: none;}
 .input_type{
-  background-color:#383838;border:#383838;color:#fff "
+  background-color:#383838;border:#383838;color:#fff;
 }
 .box_column{
   border:1px solid;
