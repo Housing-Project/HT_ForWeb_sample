@@ -1,5 +1,6 @@
 package com.ht.serviceImpl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,12 @@ public class NewServiceImpl_Admin implements NewService_Admin{
 	private NewDao_Admin newDao;
 	
 	@Override
-	public List<New> getNewList(){
-		return newDao.getNewList();
+	public List<New> getNewList(int page) throws SQLException{
+		return newDao.getNewList(page);
+	}
+
+	@Override
+	public int getNewNum() throws SQLException {
+		return newDao.getNewNum();
 	}
 }

@@ -203,6 +203,6 @@ function getNewList(){
 		}
 	});
 }
-</script> 
+</script>
 </body>
 </html>

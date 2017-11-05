@@ -8,6 +8,9 @@ public class New {
 	private String userNickName;
 	private String newContent;
 	private int newStatus;
+	private String newGuiding;
+	private int viewTimes;
+	
 	public int getNewId() {
 		return newId;
 	}
@@ -44,10 +47,22 @@ public class New {
 	public void setNewStatus(int newStatus) {
 		this.newStatus = newStatus;
 	}
+	public String getNewGuiding() {
+		return newGuiding;
+	}
+	public void setNewGuiding(String newGuiding) {
+		this.newGuiding = newGuiding;
+	}
+	public int getViewTimes() {
+		return viewTimes;
+	}
+	public void setViewTimes(int viewTimes) {
+		this.viewTimes = viewTimes;
+	}
 	@Override
 	public String toString() {
 		return "New [newId=" + newId + ", newName=" + newName + ", newTime=" + newTime + ", userNickName="
-				+ userNickName + ", newContent=" + newContent + ", newStatus=" + newStatus + "]";
+				+ userNickName + ", newContent=" + newContent + ", newStatus=" + newStatus + ", newGuiding="
+				+ newGuiding + ", viewTimes=" + viewTimes + "]";
 	}
-	
 }
