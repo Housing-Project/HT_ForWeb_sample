@@ -41,6 +41,7 @@
         <script src="js/jquery-accordion-menu.js" type="text/javascript"></script>
         <script src="js/layui.js" type="text/javascript"></script>
         <script src="js/onlDes.js" type="text/javascript"></script>
+        <script src="js/onlineDesign.js" type="text/javascript"></script>
 
     </head>
     <body>
@@ -130,12 +131,12 @@
 
       <li><a href="#"><i class="fa fa-glass"></i>输入用地面积 </a>
         <ul class="submenu">
-          <li><a href="#"><input class="inpt" type="tel" placeholder="输入用地面积"/></a></li>
+          <li><a href="#"><input id="area" class="inpt" type="tel" placeholder="输入用地面积"/></a></li>
         </ul>
       </li>
       <li><a href="#"><i class="fa fa-glass"></i>输入建筑层数 </a>
         <ul class="submenu">
-          <li data-c="isure"><a href="#"><input class="inpt" type="tel" placeholder="输入建筑层数"/></a></li>
+          <li data-c="isure"><a href="#"><input id="floor" class="inpt" type="tel" placeholder="输入建筑层数"/></a></li>
         </ul>
       </li>
       <li><a href="#"><i class="fa fa-cog"></i>输入功能房 </a>
@@ -157,7 +158,7 @@
           <li><a href="#">洗手间：&nbsp;&nbsp; <input type="text" class="input_type" /></a></li>
          </ul> </li>
        </ul> </li>
-      <li><a href="#" onclick="showimg()"><i class="fa fa-home"></i>一键布置户型 </a></li>
+      <li><a href="#" onclick="getPic()"><i class="fa fa-home"></i>一键布置户型 </a></li>
       <li><a href="#" onclick="Isometric_Diagram()"><i class="fa fa-suitcase"></i>生成轴测图 </a></li>
       <li><a href="#" onclick="showElevation()"><i class="fa fa-suitcase"></i>生成立面图 </a></li>
      </ul>

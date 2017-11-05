@@ -7,7 +7,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Ht_For_Web-2017_10_19 Maven Webapp</name>
   <url>http://maven.apache.org</url>
- 
+ <properties>
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+ </properties>
   <dependencies>
   
     
@@ -129,6 +131,7 @@
                 <source>1.8</source>  
                 <target>1.8</target>  
             </configuration>  
+            
         </plugin>  
     </plugins>  
   </build>
