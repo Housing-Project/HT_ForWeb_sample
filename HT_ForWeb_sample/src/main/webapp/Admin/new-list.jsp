@@ -30,7 +30,7 @@
 <title>资讯列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 新闻列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c"> <span class="select-box inline">
 		<select name="" class="select">
@@ -50,7 +50,7 @@
 		<table class="table table-border table-bordered table-bg table-hover table-sort">
 			<thead>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="25"><input type="checkbox" name="newid" value=""></th>
 					<th width="80">ID</th>
 					<th>新闻标题</th>
 					<th width="80">引言</th>
@@ -63,7 +63,7 @@
 			</thead>
 			<tbody id="tbody">
 				<tr class="text-c">
-					<td><input type="checkbox" value="" name=""></td>
+					<td><input type="checkbox" value="${newId }" name="newid"></td>
 					<td>10001</td>
 					<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','article-zhang.html','10001')" title="查看">资讯标题</u></td>
 					<td>行业动态</td>
@@ -74,7 +74,7 @@
 					<td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 				</tr>
 				<tr class="text-c">
-					<td><input type="checkbox" value="" name=""></td>
+					<td><input type="checkbox" value="${newId }" name="newid"></td>
 					<td>10002</td>
 					<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="article_edit('查看','article-zhang.html','10002')" title="查看">资讯标题</u></td>
 					<td>行业动态</td>
@@ -86,21 +86,38 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="admin-table-page">
+				<div id="page" class="page">
+				</div>
+			</div>
 	</div>
 </div>
 <script type="text/javascript" src="Admin/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="Admin/lib/layer/2.1/layer.js"></script> 
-<script type="text/javascript" src="Admin/lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="Admin/lib/laypage/1.2/laypage.js"></script> 
+<!--<script type="text/javascript" src="Admin/lib/My97DatePicker/WdatePicker.js"></script> -->
 <script type="text/javascript" src="Admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="Admin/static/h-ui/js/H-ui.js"></script> 
 <script type="text/javascript" src="Admin/static/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="Admin/lib/laypage/1.2/layui.js"></script>
 <script type="text/javascript">
+
+var page=1;
+var pageNow=1;
+var newNum;
+$(document).ready(function(){
+	getNewList(1);
+	showPage();
+})
+
+//获取数据库中的新闻条数并显示
+
 $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[0,8]}// 不参与排序的列
+	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
 	]
 });
 
@@ -122,16 +139,17 @@ function article_edit(title,url,id,w,h){
 	});
 	layer.full(index);
 }
-/*资讯-删除*/
-function article_del(obj,id){
+/*新闻-删除*/
+function new_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$(obj).parents("tr").remove();
-		layer.msg('已删除!',1);
+		deleteNew(id);
+		layer.msg('已删除!',{icon:1,time:1000});
 	});
 }
-/*资讯-审核*/
-function article_shenhe(obj,id){
-	layer.confirm('审核文章？', {
+/*新闻-审核*/
+function new_shenhe(obj,id){
+	layer.confirm('审核新闻？', {
 		btn: ['通过','不通过','取消'], 
 		shade: false,
 		closeBtn: 0
@@ -174,6 +192,8 @@ function article_shenqing(obj,id){
 	$(obj).parents("tr").find(".td-manage").html("");
 	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
 }
+
+var page = 1;
 $(document).ready(function(){
 	var page=1;
 	getNewList(page);
@@ -183,6 +203,8 @@ function getNewList(page){
 	$.ajax({
 		type:"post",
 		url:"new?page="+page+"",
+	   // data:{page:page},
+		//dataType:"json",
 		contentType:"application/json",
 		success:function(data){
 		    $("#tbody").empty();
@@ -196,11 +218,73 @@ function getNewList(page){
 					+"<td>"+data[i].newTime+"</td>"
 					+"<td>"+data[i].viewTimes+"</td>"
 					+"<td class='td-status'><span class='label label-success radius'>已发布</span></td>"
-					+"<td class='f-14 td-manage'><a style='text-decoration:none' onClick='article_stop(this,'10001')' href='javascript:;' title='下架'><i class='Hui-iconfont'>&#xe6de;</i></a> <a style='text-decoration:none' class='ml-5' onClick='article_edit('资讯编辑','article-add.html','10001')' href='javascript:;' title='编辑'><i class='Hui-iconfont'>&#xe6df;</i></a> <a style='text-decoration:none' class='ml-5' onClick='article_del(this,'10001')' href='javascript:;' title='删除'><i class='Hui-iconfont'>&#xe6e2;</i></a></td>"
+					+"<td class='f-14 td-manage'><a style='text-decoration:none' onClick='article_stop(this,'10001')' href='javascript:;' title='下架'><i class='Hui-iconfont'>&#xe6de;</i></a> <a style='text-decoration:none' class='ml-5' onClick='article_edit('资讯编辑','article-add.html','10001')' href='javascript:;' title='编辑'><i class='Hui-iconfont'>&#xe6df;</i></a> <a style='text-decoration:none' class='ml-5' onClick='new_del(this,"+data[i].newId+")' href='javascript:;' title='删除'><i class='Hui-iconfont'>&#xe6e2;</i></a></td>"
 				+"</tr>");
 		    }
-			alert(data);
+		//	alert(data);
 		}
+	});
+}
+var newId;
+//删除数据库中的新闻记录
+function deleteNew(newId){
+	alert("newDelete")
+	$.ajax({
+		type:"post",
+		url:"deleteNew?newId="+newId+"",
+		//data:JSON.stringify(newId),
+		dataType:"json",
+		contentType:"application/json",
+		success:function(){
+			
+			alert("newDelete该新闻已被删除");
+		}
+	});
+	alert("delete success");
+}
+//显示页码
+function showPage(){
+	
+	$.ajaxSetup({                //设置同步
+	    async : false  
+	}); 
+	
+	var pageAll = 0;
+	//var productId = $(".input-text").val();          //获取线路编号
+	
+	$.post("newNum", function(json) {
+		$("#newNum").html(""+json+"")
+		pageAll = Math.ceil(json/10);         //页数
+	});
+	
+	layui.config({
+		base: 'Admin/lib/laypage/1.2/plugins/layui/modules/'
+	});
+
+	layui.use(['icheck', 'laypage','layer'], function() {
+		var $ = layui.jquery,
+			laypage = layui.laypage,
+			layer = parent.layer === undefined ? layui.layer : parent.layer;
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_flat-green'
+		});
+
+		//page
+		laypage({
+			cont: 'page',
+			pages: pageAll,     //总页数
+			groups: 5,		//连续显示分页数
+				
+			jump: function(obj, first) {
+				//得到了当前页，用于向服务端请求对应数据
+				var curr = obj.curr;
+				pageNow = curr;
+				if(!first) {
+					getNewList(curr);
+				}
+			}
+		});
+		
 	});
 }
 </script>
